@@ -4,28 +4,29 @@
   <meta charset="UTF-8" />
   <title>404s to Mars! – Error 404</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Fuente retro -->
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+
   <div class="stars"></div>
+  <div class="asteroids"></div>
+  <div class="space-ship"></div>
+  <div class="tv-interference"></div>
   <div class="crt-overlay"></div>
   <div class="scanlines"></div>
   <div class="static-noise"></div>
 
   <main class="console">
 
-    <!-- ERROR 404 GIGANTE -->
+    <!-- ERROR 404 -->
     <header class="hero">
       <div class="error-code-big">
         <span class="glitch-text" data-text="404">404</span>
       </div>
 
       <p class="mono small status-line">
-        ERROR CODE: <span class="status-badge">DESTINATION NOT FOUND</span>
+        ERROR: <span class="status-badge">DESTINATION NOT FOUND</span>
       </p>
 
       <p class="subtitle">
@@ -33,30 +34,16 @@
       </p>
     </header>
 
-    <!-- CONSOLE MENU -->
+    <!-- MENU -->
     <section class="section console-menu">
       <h2>Console Menu</h2>
 
       <div class="console-menu-grid">
-        <button class="btn console-btn" data-command="reboot">
-          [ REBOOT NAVIGATION ]
-        </button>
-
-        <button class="btn console-btn" data-command="scan">
-          [ SCAN FOR MARS AGAIN ]
-        </button>
-
-        <button class="btn console-btn" data-command="logs">
-          [ OPEN MISSION LOG ]
-        </button>
-
-        <a href="/" class="btn console-btn console-link" data-command="home">
-          [ RETURN TO HOME BASE ]
-        </a>
+        <button class="btn console-btn" data-command="reboot">[ REBOOT NAVIGATION ]</button>
       </div>
 
       <p class="mono small hint">
-        Use the console to attempt recovery. Success probability: &lt;0.07%.
+        Rebooting navigation might stabilize the anomaly. Probability unknown.
       </p>
     </section>
 
@@ -65,14 +52,13 @@
       <h2>System Scan</h2>
 
       <p class="mono">
-        &gt; SCANNING SOLAR SYSTEM FOR TARGET: <span class="target">MARS</span>...
+        &gt; SCANNING UNIVERSE FOR TARGET: <span class="target">MARS</span>...
         <span class="blinking-cursor">_</span>
       </p>
 
       <div class="loading">
         <div class="loading-frame">
           <div class="loading-glass"></div>
-
           <div class="loading-bar">
             <div class="loading-bar__progress" id="loadingBar"></div>
           </div>
@@ -83,18 +69,28 @@
       </div>
     </section>
 
-    <!-- MISSION LOG -->
+    <!-- TERMINAL -->
     <section class="section">
       <h2>Live Mission Log</h2>
       <div class="terminal" id="terminalLog"></div>
+
+      <input type="text" id="terminalInput" class="terminal-input" placeholder=">_">
     </section>
 
     <footer class="footer mono small">
-      &gt; Uplink active... Awaiting Earth response (T+10min)
+        &gt; Uplink active... Awaiting Earth response (T+10min)
+
+        <div class="footer-easter small">
+            <br>
+            <span class="footer-title">SECRET FUNCTIONS:</span><br>
+            • <strong>Konami Code</strong>: ↑ ↑ ↓ ↓ ← → ← → B A  
+            → Activates <em>Multiverse Portal</em> (Easter Egg)<br>
+            • <strong>Mini-game</strong>: type <code>run-game</code> in the terminal and press ENTER  
+            → Launches the ASCII game <em>Asteroid Evade</em>
+        </div>
     </footer>
 
   </main>
 
 <script src="js/script.js"></script>
 </body>
-</html>

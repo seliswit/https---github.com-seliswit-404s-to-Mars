@@ -1,66 +1,71 @@
-// ====== RETRO SOUND SYSTEM ======
+/* ==========================================================
+   AUDIO SYSTEM
+========================================================== */
 const sounds = {
   click: new Audio("assets/audio/beep-click.mp3"),
   hover: new Audio("assets/audio/beep-hover.mp3"),
   glitch: new Audio("assets/audio/glitch.mp3"),
   alert: new Audio("assets/audio/alert.mp3"),
-  static: new Audio("assets/audio/static.mp3")
+  static: new Audio("assets/audio/static.mp3"),
+  warp: new Audio("assets/audio/warp.mp3"),
+  critical: new Audio("assets/audio/critical.mp3")
 };
 
 function playSound(name) {
-  const audio = sounds[name];
-  if (!audio) return;
-  audio.currentTime = 0;
-  audio.volume = 0.25;
-  audio.play().catch(() => {});
+  const a = sounds[name];
+  if (!a) return;
+  a.currentTime = 0;
+  a.volume = 0.25;
+  a.play().catch(() => {});
 }
 
-// Play ambience static at start
-setTimeout(() => playSound("static"), 250);
+setTimeout(() => playSound("static"), 200);
 
 
-// ====== TERMINAL LOG ======
+/* ==========================================================
+   TERMINAL LOG SYSTEM
+========================================================== */
 const terminal = document.getElementById("terminalLog");
 
 function addLog(msg) {
+  const t = new Date().toISOString().split("T")[1].slice(0, 8);
   const line = document.createElement("div");
   line.className = "terminal-line";
-
-  const time = new Date().toISOString().split("T")[1].slice(0, 8);
-
-  line.innerHTML = `<span style="color:#66ff99">[${time}] ></span> ${msg}`;
+  line.innerHTML = `<span style="color:#66ff99">[${t}] ></span> ${msg}`;
   terminal.appendChild(line);
   terminal.scrollTop = terminal.scrollHeight;
 }
 
 const autoMsgs = [
-  "Initializing deep-space antennas...",
-  "Recalibrating star tracker...",
-  "Fetching last known Mars orbit...",
-  "Error: orbit mismatch detected.",
-  "Comparing results with NASA database...",
-  "Gravity anomaly detected.",
-  "404: Planet not found.",
-  "Attempting multiverse re-alignment...",
+  "Calibrating quantum sensors...",
+  "Verifying multiverse boundaries...",
+  "Searching for Mars in timeline variant B-22...",
+  "Error: timeline divergence detected.",
+  "Continuum instability rising...",
+  "Gravitational echoes mismatch...",
+  "404 anomaly persists.",
+  "Attempting cross-reality alignment..."
 ];
-let logIndex = 0;
+let autoIndex = 0;
 
 setInterval(() => {
-  addLog(autoMsgs[logIndex]);
-  logIndex = (logIndex + 1) % autoMsgs.length;
+  addLog(autoMsgs[autoIndex]);
+  autoIndex = (autoIndex + 1) % autoMsgs.length;
 }, 3500);
 
 
-// ====== SYSTEM SCAN ======
+/* ==========================================================
+   SYSTEM SCAN BAR (retro loading)
+========================================================== */
 const bar = document.getElementById("loadingBar");
-const percentTxt = document.getElementById("loadingPercent");
+const pctTxt = document.getElementById("loadingPercent");
 const statusTxt = document.getElementById("loadingStatus");
 
 let pct = 0;
 let dir = 1;
-let scanning = null;
+let scanLoop;
 
-function updateScan() {
+function scanUpdate() {
   pct += 0.35 * dir;
 
   if (pct >= 100) {
@@ -69,78 +74,198 @@ function updateScan() {
     return;
   }
 
-  if (pct > 85) dir = dir * -1;
-  if (pct < 60) dir = 1;
+  if (pct > 85) dir = -1;
+  if (pct < 50) dir = 1;
 
-  percentTxt.textContent = `LOADING ${String(Math.round(pct)).padStart(3,"0")}%`;
+  pctTxt.textContent = `LOADING ${String(Math.round(pct)).padStart(3,"0")}%`;
   bar.style.width = pct + "%";
 }
 
 function startScan() {
-  clearInterval(scanning);
-  pct = 0;
+  clearInterval(scanLoop);
+  pct = 0; 
   dir = 1;
   statusTxt.textContent = "STATUS: RUNNING SCAN SEQUENCE...";
-  scanning = setInterval(updateScan, 200);
-}
-
-function completeScan() {
-  clearInterval(scanning);
-  statusTxt.textContent = "STATUS: SCAN COMPLETE – TARGET NOT FOUND";
-  addLog("Scan complete. Mars not detected in this universe.");
-
-  playSound("alert");
-  triggerAlertEffect();
-
-  setTimeout(() => startScan(), 6000);
+  scanLoop = setInterval(scanUpdate, 200);
 }
 
 startScan();
 
+function completeScan() {
+  clearInterval(scanLoop);
+  statusTxt.textContent = "STATUS: TARGET NOT FOUND";
+  addLog("Scan complete. Target missing across all universes.");
 
-// ====== ALERT EFFECT ======
-function triggerAlertEffect() {
-  document.body.classList.add("alert");
-  setTimeout(() => document.body.classList.remove("alert"), 700);
+  playSound("alert");
+  triggerCriticalMode();
+
+  setTimeout(() => startScan(), 6000);
 }
 
 
-// ====== CONSOLE MENU ======
-document.querySelectorAll(".console-btn").forEach(btn => {
-  btn.addEventListener("mouseenter", () => playSound("hover"));
+/* ==========================================================
+   CRITICAL SYSTEM MODE
+========================================================== */
+function triggerCriticalMode() {
+  document.body.classList.add("critical");
+  playSound("critical");
 
-  btn.addEventListener("click", (e) => {
-    if (!btn.classList.contains("console-link")) e.preventDefault();
-    playSound("click");
+  addLog("CRITICAL SYSTEM ERROR: Universe instability rising.");
 
-    const cmd = btn.dataset.command;
-    runCommand(cmd);
-  });
+  setTimeout(() => {
+    document.body.classList.remove("critical");
+  }, 1500);
+}
+
+
+/* ==========================================================
+   MULTIVERSE MODE (random)
+========================================================== */
+setInterval(() => {
+  if (Math.random() < 0.05) {
+    document.body.classList.add("multiverse");
+    playSound("glitch");
+    addLog("MULTIVERSE SHIFT DETECTED...");
+    setTimeout(() => document.body.classList.remove("multiverse"), 900);
+  }
+}, 8000);
+
+
+/* ==========================================================
+   MENU BUTTON (REBOOT)
+========================================================== */
+const rebootBtn = document.querySelector(".console-btn");
+
+rebootBtn.addEventListener("mouseenter", () => playSound("hover"));
+
+rebootBtn.addEventListener("click", () => {
+  playSound("click");
+  addLog("Rebooting navigation system...");
+  screenOff();
 });
 
-function runCommand(cmd) {
-  if (cmd === "reboot") {
-    addLog("Rebooting navigation system...");
-    triggerAlertEffect();
-    startScan();
-  }
 
-  if (cmd === "scan") {
-    addLog("Manual scan initiated...");
-    startScan();
-  }
-
-  if (cmd === "logs") {
-    addLog("Dumping extended mission logs...");
-    [
-      "--- EXTENDED LOG ---",
-      "Multiverse breach possibility: 0.006%",
-      "Crew status: uncertain but hopeful",
-      "Suggested action: accept the 404"
-    ].forEach((l, i) => setTimeout(() => addLog(l), i * 500));
-  }
-
-  if (cmd === "home") {
-    addLog("Attempting to route user home...");
-  }
+/* ==========================================================
+   SCREEN-OFF EFFECT (shutdown)
+========================================================== */
+function screenOff() {
+  playSound("warp");
+  document.body.classList.add("screen-off");
+  setTimeout(() => location.reload(), 900);
 }
+
+
+/* ==========================================================
+   TERMINAL INPUT (MINIGAME + COMMANDS)
+========================================================== */
+const terminalInput = document.getElementById("terminalInput");
+
+terminalInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    handleCommand(terminalInput.value.trim());
+    terminalInput.value = "";
+  }
+});
+
+function handleCommand(cmd) {
+  addLog("> " + cmd);
+
+  if (cmd === "run-game") startMiniGame();
+  else if (cmd === "help") addLog("Commands: help, run-game");
+  else addLog("Unknown command.");
+}
+
+
+/* ==========================================================
+   MINIGAME: ASTEROID EVADE (ASCII)
+========================================================== */
+let gameActive = false;
+let gameInterval;
+let player = { x: 5, y: 5 };
+let obstacles = [];
+let gameWidth = 20;
+let gameHeight = 10;
+
+function startMiniGame() {
+  if (gameActive) return;
+
+  addLog("Starting mini-game: ASTEROID EVADE...");
+  gameActive = true;
+  obstacles = [];
+  player = { x: 2, y: 5 };
+
+  gameInterval = setInterval(gameTick, 250);
+}
+
+function gameTick() {
+  // move obstacles
+  obstacles.forEach(o => o.x--);
+  obstacles = obstacles.filter(o => o.x >= 0);
+
+  // generate new obstacles
+  if (Math.random() < 0.3) {
+    obstacles.push({ x: gameWidth-1, y: Math.floor(Math.random() * gameHeight) });
+  }
+
+  // detect collision
+  for (let o of obstacles) {
+    if (o.x === player.x && o.y === player.y) {
+      gameOver();
+      return;
+    }
+  }
+
+  renderGame();
+}
+
+function renderGame() {
+  let grid = [];
+
+  for (let y = 0; y < gameHeight; y++) {
+    let row = "";
+    for (let x = 0; x < gameWidth; x++) {
+      if (player.x === x && player.y === y) row += "▲";
+      else if (obstacles.some(o => o.x === x && o.y === y)) row += "■";
+      else row += ".";
+    }
+    grid.push(row);
+  }
+
+  addLog(grid.join(" "));
+}
+
+function gameOver() {
+  clearInterval(gameInterval);
+  addLog("GAME OVER — You were hit by an asteroid.");
+  gameActive = false;
+}
+
+/* player movement */
+document.addEventListener("keydown", (e) => {
+  if (!gameActive) return;
+
+  if (e.key === "ArrowUp" && player.y > 0) player.y--;
+  if (e.key === "ArrowDown" && player.y < gameHeight-1) player.y++;
+  if (e.key === "ArrowLeft" && player.x > 0) player.x--;
+  if (e.key === "ArrowRight" && player.x < gameWidth-1) player.x++;
+});
+
+
+/* ==========================================================
+   KONAMI CODE (Easter Egg)
+========================================================== */
+let konami = [];
+const konamiCode = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+
+document.addEventListener("keydown", (e) => {
+  konami.push(e.key);
+
+  if (konami.length > 10) konami.shift();
+
+  if (konami.join("") === konamiCode.join("")) {
+    addLog("EASTER EGG DETECTED: MULTIVERSE PORTAL OPENED.");
+    document.body.classList.add("multiverse");
+    playSound("warp");
+    setTimeout(() => document.body.classList.remove("multiverse"), 3000);
+  }
+});
