@@ -2,10 +2,10 @@
    AUDIO SYSTEM
 ========================================================== */
 const sounds = {
-  click:    new Audio("assets/audio/beep-click.mp3"),
+  click:    new Audio("assets/audio/beep-click.wav"),
   hover:    new Audio("assets/audio/beep-hover.mp3"),
   glitch:   new Audio("assets/audio/glitch.mp3"),
-  alert:    new Audio("assets/audio/alert.mp3"),
+  alert:    new Audio("assets/audio/alert.wav"),
   static:   new Audio("assets/audio/static.mp3"),
   warp:     new Audio("assets/audio/warp.mp3"),
   critical: new Audio("assets/audio/critical.mp3")
