@@ -12,10 +12,14 @@
   <div class="stars"></div>
   <div class="asteroids"></div>
   <div class="space-ship"></div>
+
+  <!-- NUEVO EFECTO DE RUIDO ANTIGUO -->
+  <div class="noise-overlay"></div>
+  <div class="noise-overlay-2"></div>
+
   <div class="tv-interference"></div>
   <div class="crt-overlay"></div>
   <div class="scanlines"></div>
-  <div class="static-noise"></div>
 
   <main class="console">
 
@@ -74,23 +78,22 @@
       <h2>Live Mission Log</h2>
       <div class="terminal" id="terminalLog"></div>
 
-      <input type="text" id="terminalInput" class="terminal-input" placeholder=">_">
+      <input type="text" id="terminalInput" class="terminal-input" placeholder="Type command (run-game / help)">
     </section>
 
     <footer class="footer mono small">
-        &gt; Uplink active... Awaiting Earth response (T+10min)
+      &gt; Uplink active... Awaiting Earth response (T+10min)
 
-        <div class="footer-easter small">
-            <br>
-            <span class="footer-title">SECRET FUNCTIONS:</span><br>
-            • <strong>Konami Code</strong>: ↑ ↑ ↓ ↓ ← → ← → B A  
-            → Activates <em>Multiverse Portal</em> (Easter Egg)<br>
-            • <strong>Mini-game</strong>: type <code>run-game</code> in the terminal and press ENTER  
-            → Launches the ASCII game <em>Asteroid Evade</em>
-        </div>
+      <div class="footer-easter small">
+        <br>
+        <span class="footer-title">SECRET FUNCTIONS:</span><br>
+        • <strong>Mini-game</strong>: type <code>run-game</code> in the terminal and press ENTER  
+        → Launches <em>Asteroid Evade</em>
+      </div>
     </footer>
 
   </main>
 
 <script src="js/script.js"></script>
 </body>
+</html>

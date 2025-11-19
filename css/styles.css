@@ -7,8 +7,7 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   height: 100%;
 }
 
@@ -31,7 +30,7 @@ body {
     radial-gradient(1.5px 1.5px at 80% 70%, #ffffff, transparent),
     radial-gradient(1px 1px at 50% 50%, #ffffff, transparent);
   opacity: 0.35;
-  z-index: -5;
+  z-index: -6;
   animation: starfield 45s linear infinite;
 }
 
@@ -47,7 +46,7 @@ body {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: -4;
+  z-index: -5;
 }
 
 .asteroids::before,
@@ -89,7 +88,7 @@ body {
   background: url('https://i.imgur.com/psu7wxP.png') no-repeat center/contain;
   filter: drop-shadow(0 0 10px #00ff55);
   animation: ship-move 18s linear infinite;
-  z-index: -3;
+  z-index: -4;
 }
 
 @keyframes ship-move {
@@ -100,30 +99,37 @@ body {
 }
 
 /* ================================
-   CRT STATIC + INTERFERENCE
+   FULL SCREEN HEAVY TV STATIC
 =================================== */
-.static-noise {
+.noise-overlay,
+.noise-overlay-2 {
   pointer-events: none;
   position: fixed;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(255,255,255,0.06),
-    rgba(255,255,255,0.06) 1px,
-    rgba(0,0,0,0.05) 1px,
-    rgba(0,0,0,0.05) 3px
-  );
+  z-index: 9999;
+  opacity: 0.18;
   mix-blend-mode: screen;
-  z-index: 5;
-  opacity: 0.06;
-  animation: static-shift 0.6s infinite steps(2);
+  background: url("https://i.imgur.com/8fKQ7Zr.png");
+  background-size: cover;
+  animation: noiseMove 0.35s infinite steps(2);
 }
 
-@keyframes static-shift {
-  0% { opacity: 0.03; }
-  100% { opacity: 0.12; }
+.noise-overlay-2 {
+  opacity: 0.10;
+  animation-duration: 0.55s;
+  background: url("https://i.imgur.com/AtB1F1x.png");
+  mix-blend-mode: lighten;
 }
 
+@keyframes noiseMove {
+  0% { transform: translate(0,0); }
+  50% { transform: translate(-15px, 15px); }
+  100% { transform: translate(20px, -12px); }
+}
+
+/* ================================
+   TV INTERFERENCE + STATIC + SCANLINES
+=================================== */
 .tv-interference {
   pointer-events: none;
   position: fixed;
@@ -145,13 +151,12 @@ body {
   100% { transform: translateY(2%); }
 }
 
-/* CRT vignette & scanlines */
 .crt-overlay {
   position: fixed;
   inset: 0;
   pointer-events: none;
   background: radial-gradient(circle, transparent 0%, transparent 60%, rgba(0,0,0,0.9) 100%);
-  z-index: -1;
+  z-index: 1;
 }
 
 .scanlines {
@@ -166,7 +171,7 @@ body {
     transparent 5px
   );
   opacity: 0.4;
-  z-index: -2;
+  z-index: 2;
 }
 
 /* ================================
@@ -187,7 +192,7 @@ body {
 }
 
 @keyframes pulse {
-  50% { opacity: 0.85; }
+  50% { opacity: 0.8; }
 }
 
 .status-line {
@@ -201,7 +206,6 @@ body {
   box-shadow: 0 0 6px #00ff55;
 }
 
-/* glitch effect */
 .glitch-text {
   position: relative;
 }
@@ -234,17 +238,7 @@ body {
 }
 
 /* ================================
-   MULTIVERSE MODE
-=================================== */
-body.multiverse .error-code-big {
-  color: #ff00ff;
-  text-shadow:
-    0 0 25px #ff00ff,
-    0 0 45px #ff00ff;
-}
-
-/* ================================
-   CRITICAL SYSTEM MODE
+   MODE CRITICAL
 =================================== */
 body.critical .error-code-big {
   color: #ff3333;
@@ -280,16 +274,15 @@ body.critical .error-code-big {
   cursor: pointer;
   font-size: 1.2rem;
   box-shadow: 0 0 10px #00ff55;
-  text-decoration: none;
 }
 
 .btn:hover {
-  background: rgba(0,255,85,0.12);
+  background: rgba(0,255,85,0.15);
   box-shadow: 0 0 14px #00ff55;
 }
 
 /* ================================
-   SYSTEM SCAN
+   LOADING BAR
 =================================== */
 .loading-frame {
   border: 1px solid #00ff55;
@@ -324,7 +317,7 @@ body.critical .error-code-big {
 }
 
 /* ================================
-   TERMINAL + INPUT (MINIGAME)
+   TERMINAL + INPUT
 =================================== */
 .terminal {
   height: 230px;
@@ -333,7 +326,6 @@ body.critical .error-code-big {
   border: 1px solid #00ff55;
   padding: .8rem;
   box-shadow: inset 0 0 12px rgba(0,255,85,0.3);
-  position: relative;
 }
 
 .terminal-input {
@@ -352,7 +344,7 @@ body.critical .error-code-big {
 }
 
 /* ================================
-   SCREEN OFF EFFECT
+   SCREEN OFF
 =================================== */
 body.screen-off {
   animation: screenoff .6s linear forwards;
@@ -364,18 +356,18 @@ body.screen-off {
 }
 
 /* ================================
-   FOOTER
+   FOOTER + SECRET FUNCTIONS
 =================================== */
 .footer {
   text-align: center;
-  opacity: 0.7;
+  opacity: 0.8;
   margin-top: 2rem;
 }
 
 .footer-easter {
   margin-top: 0.5rem;
   opacity: 0.85;
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 .footer-easter code {
