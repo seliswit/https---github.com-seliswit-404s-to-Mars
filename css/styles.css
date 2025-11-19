@@ -99,7 +99,7 @@ body {
 }
 
 /* ================================
-   FULL SCREEN HEAVY TV STATIC
+   FULL SCREEN TV STATIC (HEAVY)
 =================================== */
 .noise-overlay,
 .noise-overlay-2 {
@@ -128,7 +128,7 @@ body {
 }
 
 /* ================================
-   TV INTERFERENCE + STATIC + SCANLINES
+   TV INTERFERENCE + SCANLINES + CRT
 =================================== */
 .tv-interference {
   pointer-events: none;
@@ -174,8 +174,113 @@ body {
   z-index: 2;
 }
 
+/* ===========================================
+   RETRO TERMINAL AUDIO TOGGLE
+=========================================== */
+.sound-toggle {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.85);
+  border: 2px solid #00ff55;
+  color: #00ff55;
+  font-size: 1rem;
+  font-family: "VT323", monospace;
+  box-shadow: 0 0 12px #00ff55, inset 0 0 6px #00ff55;
+  cursor: pointer;
+  z-index: 999999;
+  user-select: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.2s ease;
+}
+
+/* Texto retro */
+.sound-icon {
+  letter-spacing: 1px;
+  pointer-events: none;
+}
+
+/* LED retro */
+.sound-led {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #00ff55;
+  box-shadow: 0 0 6px #00ff55;
+}
+
+/* Hover */
+.sound-toggle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 18px #00ff55, inset 0 0 8px #00ff55;
+}
+
+/* Tooltip CRT */
+.sound-tooltip {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  padding: 3px 6px;
+  font-size: 0.9rem;
+  border: 1px solid #00ff55;
+  background: rgba(0,0,0,0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+  text-shadow: 0 0 4px #00ff55;
+}
+
+.sound-toggle:hover .sound-tooltip {
+  opacity: 1;
+  transform: translateY(3px);
+}
+
+/* Estado OFF */
+.sound-toggle.off {
+  border-color: #ff3333;
+  color: #ff3333;
+  box-shadow: 0 0 12px #ff0000, inset 0 0 6px #ff0000;
+}
+
+.sound-toggle.off .sound-led {
+  background: #ff3333;
+  box-shadow: 0 0 6px #ff0000;
+}
+
+.sound-toggle.off .sound-tooltip {
+  border-color: #ff3333;
+  box-shadow: 0 0 6px #ff0000;
+}
+
+/* Efecto CRT / Glitch corto */
+.sound-toggle.glitch .sound-icon {
+  animation: retroGlitch 0.2s steps(2) 1;
+}
+
+@keyframes retroGlitch {
+  0%   { transform: translateX(0); }
+  30%  { transform: translateX(-2px); text-shadow: -2px 0 #00ff55; }
+  60%  { transform: translateX(2px);  text-shadow: 2px 0 #ff3333; }
+  100% { transform: translateX(0); text-shadow: none; }
+}
+
+/* Pulsación retro */
+.sound-toggle.animating {
+  animation: retroPulse 0.25s ease-out;
+}
+
+@keyframes retroPulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(.85); }
+  100% { transform: scale(1); }
+}
+
 /* ================================
-   HERO / ERROR 404
+   ERROR 404 PANEL
 =================================== */
 .hero {
   text-align: center;
@@ -238,7 +343,7 @@ body {
 }
 
 /* ================================
-   MODE CRITICAL
+   CRITICAL MODE
 =================================== */
 body.critical .error-code-big {
   color: #ff3333;
@@ -344,7 +449,7 @@ body.critical .error-code-big {
 }
 
 /* ================================
-   SCREEN OFF
+   SCREEN OFF (REBOOT)
 =================================== */
 body.screen-off {
   animation: screenoff .6s linear forwards;

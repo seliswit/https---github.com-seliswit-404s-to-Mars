@@ -9,11 +9,18 @@
 </head>
 <body>
 
+  <!-- MUTE / UNMUTE ICON -->
+  <div id="soundToggle" class="sound-toggle">
+    <span class="sound-icon">[AUDIO ON]</span>
+    <span class="sound-led"></span>
+    <span class="sound-tooltip" id="soundTooltip">AUDIO: ON (M)</span>
+  </div>
+
   <div class="stars"></div>
   <div class="asteroids"></div>
   <div class="space-ship"></div>
 
-  <!-- NUEVO EFECTO DE RUIDO ANTIGUO -->
+  <!-- RUIDO TIPO TV ANTIGUA -->
   <div class="noise-overlay"></div>
   <div class="noise-overlay-2"></div>
 
@@ -78,7 +85,12 @@
       <h2>Live Mission Log</h2>
       <div class="terminal" id="terminalLog"></div>
 
-      <input type="text" id="terminalInput" class="terminal-input" placeholder="Type command (run-game / help)">
+      <input
+        type="text"
+        id="terminalInput"
+        class="terminal-input"
+        placeholder="Type command: run-game / help and press ENTER"
+      >
     </section>
 
     <footer class="footer mono small">
@@ -94,6 +106,6 @@
 
   </main>
 
-<script src="js/script.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>

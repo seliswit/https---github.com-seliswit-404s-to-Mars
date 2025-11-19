@@ -19,8 +19,57 @@ function playSound(name) {
   a.play().catch(() => {});
 }
 
-// ambience static on load
+// pequeño ambiente estático al iniciar
 setTimeout(() => playSound("static"), 200);
+
+
+/* ==========================================================
+   GLOBAL SOUND TOGGLE (MUTE/UNMUTE + ICON + HOTKEY)
+========================================================== */
+let soundsMuted = false;
+
+const soundToggle  = document.getElementById("soundToggle");
+const soundIcon    = soundToggle.querySelector(".sound-icon");
+const soundTooltip = document.getElementById("soundTooltip");
+
+function setSoundsMuted(muted) {
+  soundsMuted = muted;
+
+  if (soundsMuted) {
+    soundIcon.textContent = "[AUDIO OFF]";
+    soundToggle.classList.add("off");
+    soundTooltip.textContent = "AUDIO: OFF (M)";
+  } else {
+    soundIcon.textContent = "[AUDIO ON]";
+    soundToggle.classList.remove("off");
+    soundTooltip.textContent = "AUDIO: ON (M)";
+  }
+
+  // desactivar todos los sonidos
+  for (let key in sounds) {
+    if (Object.prototype.hasOwnProperty.call(sounds, key)) {
+      sounds[key].muted = soundsMuted;
+    }
+  }
+
+  // animación + glitch
+  soundToggle.classList.add("animating", "glitch");
+  setTimeout(() => {
+    soundToggle.classList.remove("animating", "glitch");
+  }, 260);
+}
+
+// click en icono
+soundToggle.addEventListener("click", () => {
+  setSoundsMuted(!soundsMuted);
+});
+
+// tecla M para mute/unmute
+document.addEventListener("keydown", (e) => {
+  if (e.key === "m" || e.key === "M") {
+    setSoundsMuted(!soundsMuted);
+  }
+});
 
 
 /* ==========================================================
@@ -76,6 +125,7 @@ function scanUpdate() {
     return;
   }
 
+  // comportamiento inestable para rollo “viejo monitor”
   if (pct > 85) dir = -1;
   if (pct < 50) dir = 1;
 
@@ -101,6 +151,7 @@ function completeScan() {
   playSound("alert");
   triggerCriticalMode();
 
+  // vuelve a intentar escanear tras unos segundos
   setTimeout(() => startScan(), 6000);
 }
 
@@ -194,9 +245,11 @@ function startMiniGame() {
 }
 
 function gameTick() {
+  // mover asteroides hacia la izquierda
   obstacles.forEach(o => o.x--);
   obstacles = obstacles.filter(o => o.x >= 0);
 
+  // generar nuevos asteroides
   if (Math.random() < 0.3) {
     obstacles.push({
       x: gameWidth - 1,
@@ -204,6 +257,7 @@ function gameTick() {
     });
   }
 
+  // detectar colisión
   for (let o of obstacles) {
     if (o.x === player.x && o.y === player.y) {
       gameOver();
@@ -236,6 +290,7 @@ function gameOver() {
   gameActive = false;
 }
 
+// movimiento del jugador
 document.addEventListener("keydown", (e) => {
   if (!gameActive) return;
 
