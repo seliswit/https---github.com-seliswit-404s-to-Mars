@@ -1,75 +1,146 @@
-// Scroll suave hasta instrucciones
-const showInstructionsBtn = document.getElementById("showInstructions");
-const instructionsSection = document.getElementById("instructions");
+// ====== RETRO SOUND SYSTEM ======
+const sounds = {
+  click: new Audio("assets/audio/beep-click.mp3"),
+  hover: new Audio("assets/audio/beep-hover.mp3"),
+  glitch: new Audio("assets/audio/glitch.mp3"),
+  alert: new Audio("assets/audio/alert.mp3"),
+  static: new Audio("assets/audio/static.mp3")
+};
 
-if (showInstructionsBtn && instructionsSection) {
-  showInstructionsBtn.addEventListener("click", () => {
-    instructionsSection.scrollIntoView({ behavior: "smooth" });
-  });
+function playSound(name) {
+  const audio = sounds[name];
+  if (!audio) return;
+  audio.currentTime = 0;
+  audio.volume = 0.25;
+  audio.play().catch(() => {});
 }
 
-// Barra de progreso: porcentaje numérico retro
-const percentElement = document.getElementById("loadingPercent");
-let percent = 0;
+// Play ambience static at start
+setTimeout(() => playSound("static"), 250);
 
-function updatePercent() {
-  percent = (percent + 1) % 101; // 0–100 y vuelve a empezar
-  if (percentElement) {
-    const padded = String(percent).padStart(3, "0");
-    percentElement.textContent = `LOADING ${padded}%`;
-  }
-}
 
-setInterval(updatePercent, 80); // velocidad retro
-
-// Botón "retry scan" resetea porcentaje visual (para sensación de acción)
-const retryScanBtn = document.getElementById("retryScan");
-if (retryScanBtn) {
-  retryScanBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    percent = 0;
-  });
-}
-
-// Terminal de log en vivo
+// ====== TERMINAL LOG ======
 const terminal = document.getElementById("terminalLog");
 
-const logMessages = [
-  "Initializing navigation systems...",
-  "Attempting to triangulate Mars coordinates...",
-  "Signal lost. Retrying uplink with Earth...",
-  "Re-routing through deep space relay station...",
-  "Gravitational anomaly detected near asteroid belt.",
-  "Warning: Mars not found in expected orbit.",
-  "Deploying backup star charts...",
-  "404: Destination planet not in database.",
-  "Suggesting manual course correction...",
-];
-
-let logIndex = 0;
-
-function addLogLine() {
-  if (!terminal) return;
-
+function addLog(msg) {
   const line = document.createElement("div");
   line.className = "terminal-line";
-  const prefixSpan = document.createElement("span");
-  prefixSpan.className = "terminal-line-prefix";
-  const messageSpan = document.createElement("span");
 
-  const timestamp = new Date().toISOString().split("T")[1].slice(0, 8);
+  const time = new Date().toISOString().split("T")[1].slice(0, 8);
 
-  prefixSpan.textContent = `[${timestamp}] > `;
-  messageSpan.textContent = logMessages[logIndex];
-
-  line.appendChild(prefixSpan);
-  line.appendChild(messageSpan);
+  line.innerHTML = `<span style="color:#66ff99">[${time}] ></span> ${msg}`;
   terminal.appendChild(line);
-
   terminal.scrollTop = terminal.scrollHeight;
-
-  logIndex = (logIndex + 1) % logMessages.length;
 }
 
-setInterval(addLogLine, 2500); // añade mensaje cada 2.5s
-addLogLine(); // uno inicial
+const autoMsgs = [
+  "Initializing deep-space antennas...",
+  "Recalibrating star tracker...",
+  "Fetching last known Mars orbit...",
+  "Error: orbit mismatch detected.",
+  "Comparing results with NASA database...",
+  "Gravity anomaly detected.",
+  "404: Planet not found.",
+  "Attempting multiverse re-alignment...",
+];
+let logIndex = 0;
+
+setInterval(() => {
+  addLog(autoMsgs[logIndex]);
+  logIndex = (logIndex + 1) % autoMsgs.length;
+}, 3500);
+
+
+// ====== SYSTEM SCAN ======
+const bar = document.getElementById("loadingBar");
+const percentTxt = document.getElementById("loadingPercent");
+const statusTxt = document.getElementById("loadingStatus");
+
+let pct = 0;
+let dir = 1;
+let scanning = null;
+
+function updateScan() {
+  pct += 0.35 * dir;
+
+  if (pct >= 100) {
+    pct = 100;
+    completeScan();
+    return;
+  }
+
+  if (pct > 85) dir = dir * -1;
+  if (pct < 60) dir = 1;
+
+  percentTxt.textContent = `LOADING ${String(Math.round(pct)).padStart(3,"0")}%`;
+  bar.style.width = pct + "%";
+}
+
+function startScan() {
+  clearInterval(scanning);
+  pct = 0;
+  dir = 1;
+  statusTxt.textContent = "STATUS: RUNNING SCAN SEQUENCE...";
+  scanning = setInterval(updateScan, 200);
+}
+
+function completeScan() {
+  clearInterval(scanning);
+  statusTxt.textContent = "STATUS: SCAN COMPLETE – TARGET NOT FOUND";
+  addLog("Scan complete. Mars not detected in this universe.");
+
+  playSound("alert");
+  triggerAlertEffect();
+
+  setTimeout(() => startScan(), 6000);
+}
+
+startScan();
+
+
+// ====== ALERT EFFECT ======
+function triggerAlertEffect() {
+  document.body.classList.add("alert");
+  setTimeout(() => document.body.classList.remove("alert"), 700);
+}
+
+
+// ====== CONSOLE MENU ======
+document.querySelectorAll(".console-btn").forEach(btn => {
+  btn.addEventListener("mouseenter", () => playSound("hover"));
+
+  btn.addEventListener("click", (e) => {
+    if (!btn.classList.contains("console-link")) e.preventDefault();
+    playSound("click");
+
+    const cmd = btn.dataset.command;
+    runCommand(cmd);
+  });
+});
+
+function runCommand(cmd) {
+  if (cmd === "reboot") {
+    addLog("Rebooting navigation system...");
+    triggerAlertEffect();
+    startScan();
+  }
+
+  if (cmd === "scan") {
+    addLog("Manual scan initiated...");
+    startScan();
+  }
+
+  if (cmd === "logs") {
+    addLog("Dumping extended mission logs...");
+    [
+      "--- EXTENDED LOG ---",
+      "Multiverse breach possibility: 0.006%",
+      "Crew status: uncertain but hopeful",
+      "Suggested action: accept the 404"
+    ].forEach((l, i) => setTimeout(() => addLog(l), i * 500));
+  }
+
+  if (cmd === "home") {
+    addLog("Attempting to route user home...");
+  }
+}
