@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>404s to Mars!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fuente retro -->
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="crt-overlay"></div>
+  <div class="scanlines"></div>
+
+  <main class="console">
+    <!-- HERO -->
+    <header class="hero">
+      <h1 class="glitch-text" data-text="404s to Mars!">404s to Mars!</h1>
+      <p class="subtitle">
+        Houston, we have a problem... but the journey continues!
+      </p>
+      <button class="btn" id="showInstructions">
+        Show instructions!
+      </button>
+    </header>
+
+    <!-- BLOQUE HISTORIA -->
+    <section class="section" id="instructions">
+      <h2>Mission Objective</h2>
+      <p>
+        Major Tom was preparing to land on Mars when suddenly all systems went dark.
+        Only an error page remained. The planet Mars has vanished from the solar system.
+      </p>
+      <p>
+        Your crew must design and develop the full responsive error 404 page
+        that appears aboard his computer ship while Earth takes 10 minutes
+        to respond.
+      </p>
+
+      <h3>Approved Technologies</h3>
+      <ul class="list">
+        <li>HTML5, CSS3, JavaScript (external libraries allowed).</li>
+        <li>Creative animations and visual effects are especially valued.</li>
+        <li>Responsive design for different screen sizes.</li>
+      </ul>
+
+      <h3>Operational Requirements</h3>
+      <ul class="list">
+        <li>Project developed by a crew of 3–5 members.</li>
+        <li>Source code hosted in a public GitHub repository.</li>
+        <li>Source code uploaded to your Virtual Campus.</li>
+      </ul>
+    </section>
+
+    <!-- BARRA DE PROGRESO VINTAGE -->
+    <section class="section">
+      <h2>System Scan</h2>
+      <p class="mono">
+        &gt; SCANNING SOLAR SYSTEM FOR MARS...  
+        <span class="blinking-cursor">_</span>
+      </p>
+
+      <div class="loading">
+        <div class="loading-bar">
+          <div class="loading-bar__progress"></div>
+        </div>
+        <p class="loading-percent" id="loadingPercent">
+          LOADING 0%
+        </p>
+      </div>
+
+      <p class="mono small">
+        If scan fails, try to <a href="/" class="link">return to home base</a>
+        or <a href="#" class="link" id="retryScan">retry scan</a>.
+      </p>
+    </section>
+
+    <!-- LOG / TERMINAL -->
+    <section class="section">
+      <h2>Live Mission Log</h2>
+      <div class="terminal" id="terminalLog">
+        <!-- Mensajes generados por JS -->
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer mono small">
+      &gt; Uplink established... Awaiting Earth response (T+10 min)
+    </footer>
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
